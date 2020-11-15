@@ -31,18 +31,18 @@
 
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="City, State" aria-label="Recipient's username"
-                        aria-describedby="button-addon2">
+                        aria-describedby="button-addon2" id="city-input">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
                     </div>
                 </div>
 
                 <ul class="list-group">
-                    <li class="list-group-item">Cras justo odio</li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item"></li>
                 </ul>
 
             </div>
@@ -52,8 +52,11 @@
                 <div class="card mb-4">
 
                     <div class="card-body">
-                        <h3>Test</h3>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <h3 class="mb-3" id="city-name">Test</h3>
+                        <p class="card-text" id="temperature"></p>
+                        <p class="card-text" id="humidity"></p>
+                        <p class="card-text" id="wind-speed"></p>
+                        <p class="card-text" id="uv-index"></p>
                     </div>
 
                 </div>
@@ -114,7 +117,10 @@
 
     </section>
 
+    <!-- Script links here -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
     <script src="./assets/js/script.js"></script>
 
 </body>
