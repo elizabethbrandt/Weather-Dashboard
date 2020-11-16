@@ -16,7 +16,7 @@ var today = moment().format('(MM/DD/YYYY)');
 // Add event listener to the search button
 $('#button-addon2').on("click", "button", currentConditions);
 
-// The search OWM function takes a cityName, searches the OWM api for it, and then passes the data to
+// Pull in current weather info to the main card
 function currentConditions() {
 
     // event.preventDefault();
@@ -45,7 +45,6 @@ function currentConditions() {
 currentConditions();
 // currentConditions("userInput")
 
-// Pull in current weather info to the main card
 
 // Pull in 5-day forecast to the weather cards below
 function forecast() {
@@ -63,12 +62,13 @@ function forecast() {
         .then(function (response) {
             console.log(response);
 
-            for (var i = 0; i < 5; i++)
-                // $('#humidity').text('Humidity: ' + response.main.humidity + '%');
-                // var icon = response.weather[0].icon
-                // $('#icon').attr('src', 'http://openweathermap.org/img/w/' + icon + '.png');
-                // $('#temperature').text('Temperature: ' + response.main.temp + ' °F');
-                // $('#humidity').text('Humidity: ' + response.main.humidity + '%');
+            for (var i = 0; i < 5; i++) {
+                $('.date').text(response.list[i].dt_txt);
+                var smallIcon = response.list[i].weather[0].icon
+                $('.small-icon').attr('src', 'http://openweathermap.org/img/w/' + smallIcon + '.png');
+                $('.temp').text('Temperature: ' + response.list[i].main.temp + ' °F');
+                $('.humid').text('Humidity: ' + response.list[i].main.humidity + '%');
+            }
         });
 
 }
