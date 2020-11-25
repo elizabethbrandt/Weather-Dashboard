@@ -1,31 +1,23 @@
-// The createRow function takes data returned by OMDB and appends the table data to the tbody
-// var addSearchHistory = function (data) {
-//     // Creates a variable for the `ul` 
-//     var ulEl = $("ul");
+renderStorage();
 
-//     // Pull the cityName into the list item
-//     var liEl = $("<li>").text(data.cityName);
-
-//     // Append the newly created list item to the unordered list
-//     liEl.prepend(ulEl);
-// };
+var citySearchHistory = [];
 
 // Display current date
 var today = moment().format('(MM/DD/YYYY)');
 
 // Add event listener to the search button
-$('#button-addon2').on("click", "button", currentConditions);
+$('#button-addon2').click(currentConditions);
 
 // Pull in current weather info to the main card
-function currentConditions() {
+function currentConditions(event) {
 
-    // event.preventDefault();
+    event.preventDefault();
+    console.log(event);
 
     var cityName = $('#city-input').val().trim();
+    // console.log(cityName);
 
-    // var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appikey=35f5097b02a181982a5bb6c4eee0ce65";
-
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=Bujumbura,Burundi&appid=166a433c57516f51dfab1f7edaed8413&units=imperial"
+    var queryURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial';
 
     $.ajax({
         url: queryURL,
@@ -35,25 +27,22 @@ function currentConditions() {
             // console.log(response);
             $('#city-name').text(response.name + ' ' + today);
             var icon = response.weather[0].icon
-            $('#icon').attr('src', 'http://openweathermap.org/img/w/' + icon + '.png');
+            $('#icon').attr('src', 'http://openweathermap.org/img/wn/' + icon + '.png');
             $('#temperature').text('Temperature: ' + response.main.temp + ' °F');
             $('#humidity').text('Humidity: ' + response.main.humidity + '%');
             $('#wind-speed').text('Wind Speed: ' + response.wind.speed + ' MPH');
             // $('#uv-index').text(response.);
         });
 };
-currentConditions();
-// currentConditions("userInput")
 
+$('#button-addon2').click(forecast);
 
 // Pull in 5-day forecast to the weather cards below
 function forecast() {
 
     var cityName = $('#city-input').val().trim();
 
-    // var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appikey=35f5097b02a181982a5bb6c4eee0ce65";
-
-    var forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=Bujumbura,Burundi&appid=166a433c57516f51dfab1f7edaed8413&units=imperial"
+    var forecastQueryURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial';
 
     $.ajax({
         url: forecastQueryURL,
@@ -62,16 +51,63 @@ function forecast() {
         .then(function (response) {
             console.log(response);
 
-            for (var i = 0; i < 5; i++) {
-                $('.date').text(response.list[i].dt_txt);
+            for (var i = 0; i < 6; i++) {
+                $('#date' + i).text(response.list[i].dt_txt);
+                // console.log(response.list[i + 8].dt_txt);
+
                 var smallIcon = response.list[i].weather[0].icon
-                $('.small-icon').attr('src', 'http://openweathermap.org/img/w/' + smallIcon + '.png');
-                $('.temp').text('Temperature: ' + response.list[i].main.temp + ' °F');
-                $('.humid').text('Humidity: ' + response.list[i].main.humidity + '%');
+                $('#icon' + i).attr('src', 'http://openweathermap.org/img/wn/' + smallIcon + '.png');
+                $('#temp' + i).text('Temperature: ' + response.list[i].main.temp + ' °F');
+                $('#humid' + i).text('Humidity: ' + response.list[i].main.humidity + '%');
             }
         });
 
 }
-forecast();
+// forecast();
 // MIGHT need something like this for the search history??
 // $("#buttons-view").empty();
+
+// Click event to create search history below the search bar and save to local storage
+$('#button-addon2').click(saveSearchHistory);
+
+function saveSearchHistory() {
+
+    var cityName = $('#city-input').val().trim().toUpperCase();
+
+    // Pull the cityName into the list item
+    var liEl = `<li class="list-group-item">${cityName}</li>`
+
+    // Append the newly created list item to the unordered list
+    $('.list-group').prepend(liEl);
+
+    // Add city to the search history array
+    citySearchHistory.push(cityName);
+
+    // save cities to local storage
+    localStorage.setItem('Cities', JSON.stringify(citySearchHistory));
+};
+
+// Get localstorage to render to page
+function renderStorage() {
+
+    var savedCity = JSON.parse(localStorage.getItem('Cities'));
+
+    // if the local storage HAS a value 
+    if (savedCity !== null) {
+
+        // then set whatever values are in there, to the global search history array
+        citySearchHistory = savedCity;
+
+        for (var i = 0; i < citySearchHistory.length; i++) {
+
+            var savedCityName = citySearchHistory[i];
+
+            var searchedCityName = `<li class="list-group-item">${savedCityName}</li>`
+
+            $('.list-group').prepend(searchedCityName);
+        }
+    }
+}
+
+// Click event for search history
+$('.list-group-item')
