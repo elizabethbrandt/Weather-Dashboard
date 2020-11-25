@@ -9,10 +9,10 @@ var today = moment().format('(MM/DD/YYYY)');
 $('#button-addon2').click(currentConditions);
 
 // Pull in current weather info to the main card
-function currentConditions(event) {
+function currentConditions() {
 
-    event.preventDefault();
-    console.log(event);
+    // event.preventDefault();
+    // console.log(event);
 
     var cityName = $('#city-input').val().trim();
     // console.log(cityName);
@@ -49,7 +49,6 @@ function forecast() {
         method: "GET"
     })
         .then(function (response) {
-            console.log(response);
 
             for (var i = 0; i < 6; i++) {
                 $('#date' + i).text(response.list[i].dt_txt);
@@ -63,7 +62,6 @@ function forecast() {
         });
 
 }
-// forecast();
 // MIGHT need something like this for the search history??
 // $("#buttons-view").empty();
 
@@ -110,4 +108,15 @@ function renderStorage() {
 }
 
 // Click event for search history
-$('.list-group-item')
+$('.list-group-item').click(function (event) {
+
+    var clickedCity = event.target.innerHTML;
+
+    // Could I also do "citySearchHistory[i]"?
+    console.log(clickedCity);
+
+    // Need to link "clickedCity" to "cityName" tied to the query
+
+    currentConditions(clickedCity);
+    forecast(clickedCity);
+})
