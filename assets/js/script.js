@@ -12,10 +12,8 @@ $('#button-addon2').click(currentConditions);
 function currentConditions() {
 
     // event.preventDefault();
-    // console.log(event);
 
     var cityName = $('#city-input').val().trim();
-    // console.log(cityName);
 
     var queryURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial';
 
@@ -24,18 +22,15 @@ function currentConditions() {
         method: "GET"
     })
         .then(function (response) {
-            console.log(response);
             $('#city-name').text(response.name + ' ' + today);
             var icon = response.weather[0].icon
             $('#icon').attr('src', 'http://openweathermap.org/img/wn/' + icon + '.png');
             $('#temperature').text('Temperature: ' + response.main.temp + ' °F');
             $('#humidity').text('Humidity: ' + response.main.humidity + '%');
             $('#wind-speed').text('Wind Speed: ' + response.wind.speed + ' MPH');
+
             var cityLongitude = response.coord.lon;
             var cityLatitude = response.coord.lat;
-
-            console.log(cityLongitude);
-            console.log(cityLatitude);
 
             var queryUVI = "http://api.openweathermap.org/data/2.5/uvi?lat=" + cityLatitude + "&lon=" + cityLongitude + "&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial"
 
@@ -44,31 +39,25 @@ function currentConditions() {
                 method: "GET"
             })
                 .then(function (response) {
-                    console.log(response);
                     var uviResponse = response.value
                     $('#uv-index').text('UV Index: ' + uviResponse);
 
                     if (uviResponse < 3) {
-                        // $('#uv-index').style.backgroundColor = 'green';
-                        console.log("Less than 3");
+                        $('#uv-index').addClass('low');
+                        $('#uv-index').removeClass('moderate high');
+
                     } else if (uviResponse >= 3 && uviResponse < 6) {
-                        console.log('between 3 and 6');
+                        $('#uv-index').addClass('moderate');
+                        $('#uv-index').removeClass('low high');
+
                     } else if (uviResponse > 6) {
-                        console.log('greater than 6');
+                        $('#uv-index').addClass('high');
+                        $('#uv-index').removeClass('low moderate');
+
                     }
                 });
 
         });
-
-    // var queryUVI = "http://api.openweathermap.org/data/2.5/uvi?lat=" + cityLatitude + "&lon=" + cityLongitude + "&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial"
-
-    // $.ajax({
-    //     url: queryUVI,
-    //     method: "GET"
-    // })
-    //     .then(function (response) {
-    //         console.log(response);
-    //     });
 
 };
 
@@ -88,6 +77,7 @@ function forecast() {
         .then(function (response) {
 
             for (var i = 0; i < 6; i++) {
+
                 $('#date' + i).text(response.list[i].dt_txt);
                 // console.log(response.list[i + 8].dt_txt);
 

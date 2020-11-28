@@ -1,3 +1,18 @@
 .list-group-item {
     cursor: pointer;
 }
+
+.low {
+    background-color: #47ce47;
+    color: white;
+}
+
+.moderate {
+    background-color: #f5ac26;
+    color: white;
+}
+
+.high {
+    background-color: red;
+    color: white;
+}
