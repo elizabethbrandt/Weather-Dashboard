@@ -24,7 +24,7 @@ function currentConditions() {
         method: "GET"
     })
         .then(function (response) {
-            // console.log(response);
+            console.log(response);
             $('#city-name').text(response.name + ' ' + today);
             var icon = response.weather[0].icon
             $('#icon').attr('src', 'http://openweathermap.org/img/wn/' + icon + '.png');
@@ -32,6 +32,8 @@ function currentConditions() {
             $('#humidity').text('Humidity: ' + response.main.humidity + '%');
             $('#wind-speed').text('Wind Speed: ' + response.wind.speed + ' MPH');
             // $('#uv-index').text(response.);
+            // Longitude response.coord.lon
+            // Latitude response.coord.lat
         });
 };
 
@@ -117,6 +119,6 @@ $('.list-group-item').click(function (event) {
 
     // Need to link "clickedCity" to "cityName" tied to the query
 
-    currentConditions(clickedCity);
-    forecast(clickedCity);
+    // currentConditions(clickedCity);
+    // forecast(clickedCity);
 })
