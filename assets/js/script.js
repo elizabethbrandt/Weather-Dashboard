@@ -31,10 +31,45 @@ function currentConditions() {
             $('#temperature').text('Temperature: ' + response.main.temp + ' °F');
             $('#humidity').text('Humidity: ' + response.main.humidity + '%');
             $('#wind-speed').text('Wind Speed: ' + response.wind.speed + ' MPH');
-            // $('#uv-index').text(response.);
-            // Longitude response.coord.lon
-            // Latitude response.coord.lat
+            var cityLongitude = response.coord.lon;
+            var cityLatitude = response.coord.lat;
+
+            console.log(cityLongitude);
+            console.log(cityLatitude);
+
+            var queryUVI = "http://api.openweathermap.org/data/2.5/uvi?lat=" + cityLatitude + "&lon=" + cityLongitude + "&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial"
+
+            $.ajax({
+                url: queryUVI,
+                method: "GET"
+            })
+                .then(function (response) {
+                    console.log(response);
+                    var uviResponse = response.value
+                    $('#uv-index').text('UV Index: ' + uviResponse);
+
+                    if (uviResponse < 3) {
+                        // $('#uv-index').style.backgroundColor = 'green';
+                        console.log("Less than 3");
+                    } else if (uviResponse >= 3 && uviResponse < 6) {
+                        console.log('between 3 and 6');
+                    } else if (uviResponse > 6) {
+                        console.log('greater than 6');
+                    }
+                });
+
         });
+
+    // var queryUVI = "http://api.openweathermap.org/data/2.5/uvi?lat=" + cityLatitude + "&lon=" + cityLongitude + "&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial"
+
+    // $.ajax({
+    //     url: queryUVI,
+    //     method: "GET"
+    // })
+    //     .then(function (response) {
+    //         console.log(response);
+    //     });
+
 };
 
 $('#button-addon2').click(forecast);
