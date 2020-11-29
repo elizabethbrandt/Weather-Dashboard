@@ -12,8 +12,8 @@
 
 ## Links
 
-* [GitHub Repo]()
-* [Depoloyed Site]()
+* [GitHub Repo](https://github.com/elizabethbrandt/Weather-Dashboard)
+* [Depoloyed Site](https://elizabethbrandt.github.io/Weather-Dashboard/)
 
 ## Lessons I learned from this assignment
 

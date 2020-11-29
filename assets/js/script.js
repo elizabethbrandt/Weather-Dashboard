@@ -59,6 +59,8 @@ function currentConditions() {
 
         });
 
+    // $('#city-input').empty();
+
 };
 
 $('#button-addon2').click(forecast);
@@ -89,8 +91,6 @@ function forecast() {
         });
 
 }
-// MIGHT need something like this for the search history??
-// $("#buttons-view").empty();
 
 // Click event to create search history below the search bar and save to local storage
 $('#button-addon2').click(saveSearchHistory);
