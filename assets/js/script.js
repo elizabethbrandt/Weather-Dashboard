@@ -43,16 +43,16 @@ function currentConditions() {
                     $('#uv-index').text('UV Index: ' + uviResponse);
 
                     if (uviResponse < 3) {
-                        $('#uv-index').addClass('low');
-                        $('#uv-index').removeClass('moderate high');
+                        $('#uv-index').addClass('bg-success');
+                        $('#uv-index').removeClass('bg-danger bg-warning');
 
                     } else if (uviResponse >= 3 && uviResponse < 6) {
-                        $('#uv-index').addClass('moderate');
-                        $('#uv-index').removeClass('low high');
+                        $('#uv-index').addClass('bg-warning');
+                        $('#uv-index').removeClass('bg-success bg-danger');
 
                     } else if (uviResponse > 6) {
-                        $('#uv-index').addClass('high');
-                        $('#uv-index').removeClass('low moderate');
+                        $('#uv-index').addClass('bg-danger');
+                        $('#uv-index').removeClass('bg-success bg-warning');
 
                     }
                 });
