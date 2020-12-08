@@ -5,23 +5,17 @@ var citySearchHistory = [];
 // Display current date
 var today = moment().format('(MM/DD/YYYY)');
 
-// Add event listener to the search button
-$('#button-addon2').click(currentConditions);
-
 // Pull in current weather info to the main card
-function currentConditions() {
+function currentConditions(cityInput) {
 
-    // event.preventDefault();
-
-    var cityName = $('#city-input').val().trim();
-
-    var queryURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial';
+    var queryURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityInput + '&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial';
 
     $.ajax({
         url: queryURL,
         method: "GET"
     })
         .then(function (response) {
+
             $('#city-name').text(response.name + ' ' + today);
             var icon = response.weather[0].icon
             $('#icon').attr('src', 'http://openweathermap.org/img/wn/' + icon + '.png');
@@ -55,22 +49,17 @@ function currentConditions() {
                         $('#uv-index').removeClass('bg-success bg-warning');
 
                     }
+
                 });
 
         });
 
-    // $('#city-input').empty();
-
 };
 
-$('#button-addon2').click(forecast);
-
 // Pull in 5-day forecast to the weather cards below
-function forecast() {
+function forecast(cityInput) {
 
-    var cityName = $('#city-input').val().trim();
-
-    var forecastQueryURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial';
+    var forecastQueryURL = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + cityInput + '&cnt=5&appid=166a433c57516f51dfab1f7edaed8413&units=imperial';
 
     $.ajax({
         url: forecastQueryURL,
@@ -78,7 +67,9 @@ function forecast() {
     })
         .then(function (response) {
 
-            for (var i = 0; i < 6; i++) {
+            console.log(response);
+
+            for (var i = 0; i < 5; i++) {
 
                 $('#date' + i).text(response.list[i].dt_txt);
                 // console.log(response.list[i + 8].dt_txt);
@@ -87,29 +78,26 @@ function forecast() {
                 $('#icon' + i).attr('src', 'http://openweathermap.org/img/wn/' + smallIcon + '.png');
                 $('#temp' + i).text('Temperature: ' + response.list[i].main.temp + ' °F');
                 $('#humid' + i).text('Humidity: ' + response.list[i].main.humidity + '%');
+
             }
         });
 
 }
 
-// Click event to create search history below the search bar and save to local storage
-$('#button-addon2').click(saveSearchHistory);
-
-function saveSearchHistory() {
-
-    var cityName = $('#city-input').val().trim().toUpperCase();
+function saveSearchHistory(cityInput) {
 
     // Pull the cityName into the list item
-    var liEl = `<li class="list-group-item">${cityName}</li>`
+    var liEl = `<li class="list-group-item">${cityInput}</li>`
 
     // Append the newly created list item to the unordered list
     $('.list-group').prepend(liEl);
 
     // Add city to the search history array
-    citySearchHistory.push(cityName);
+    citySearchHistory.push(cityInput);
 
     // save cities to local storage
     localStorage.setItem('Cities', JSON.stringify(citySearchHistory));
+
 };
 
 // Get localstorage to render to page
@@ -130,20 +118,30 @@ function renderStorage() {
             var searchedCityName = `<li class="list-group-item">${savedCityName}</li>`
 
             $('.list-group').prepend(searchedCityName);
+
         }
     }
 }
 
 // Click event for search history
-$('.list-group-item').click(function (event) {
+$('.list-group').click(function (event) {
 
     var clickedCity = event.target.innerHTML;
 
-    // Could I also do "citySearchHistory[i]"?
-    console.log(clickedCity);
+    currentConditions(clickedCity);
+    forecast(clickedCity);
 
-    // Need to link "clickedCity" to "cityName" tied to the query
-
-    // currentConditions(clickedCity);
-    // forecast(clickedCity);
 })
+
+// Click event to create search history below the search bar and save to local storage
+$('#button-addon2').click(function() {
+    
+    var cityName = $('#city-input').val().trim();
+
+    saveSearchHistory(cityName);
+
+    currentConditions(cityName);
+
+    forecast(cityName);
+
+});
