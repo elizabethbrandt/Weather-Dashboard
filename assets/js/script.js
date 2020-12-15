@@ -59,7 +59,7 @@ function currentConditions(cityInput) {
 // Pull in 5-day forecast to the weather cards below
 function forecast(cityInput) {
 
-    var forecastQueryURL = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + cityInput + '&cnt=5&appid=166a433c57516f51dfab1f7edaed8413&units=imperial';
+    var forecastQueryURL = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + cityInput + '&cnt=6&appid=166a433c57516f51dfab1f7edaed8413&units=imperial';
 
     $.ajax({
         url: forecastQueryURL,
@@ -67,17 +67,15 @@ function forecast(cityInput) {
     })
         .then(function (response) {
 
-            console.log(response);
+            for (var i = 0; i < 6; i++) {
 
-            for (var i = 0; i < 5; i++) {
-
-                $('#date' + i).text(response.list[i].dt_txt);
-                // console.log(response.list[i + 8].dt_txt);
+                $("#date"+ i).text(moment().add(i,"days").startOf("day").format("MM/DD/YYYY"));
 
                 var smallIcon = response.list[i].weather[0].icon
+
                 $('#icon' + i).attr('src', 'http://openweathermap.org/img/wn/' + smallIcon + '.png');
-                $('#temp' + i).text('Temperature: ' + response.list[i].main.temp + ' °F');
-                $('#humid' + i).text('Humidity: ' + response.list[i].main.humidity + '%');
+                $('#temp' + i).text('Temperature: ' + response.list[i].temp.day + ' °F');
+                $('#humid' + i).text('Humidity: ' + response.list[i].humidity + '%');
 
             }
         });
