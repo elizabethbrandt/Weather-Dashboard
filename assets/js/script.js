@@ -18,7 +18,7 @@ function currentConditions(cityInput) {
 
             $('#city-name').text(response.name + ' ' + today);
             var icon = response.weather[0].icon
-            $('#icon').attr('src', 'http://openweathermap.org/img/wn/' + icon + '.png');
+            $('#icon').attr('src', 'https://openweathermap.org/img/wn/' + icon + '.png');
             $('#temperature').text('Temperature: ' + response.main.temp + ' °F');
             $('#humidity').text('Humidity: ' + response.main.humidity + '%');
             $('#wind-speed').text('Wind Speed: ' + response.wind.speed + ' MPH');
@@ -26,7 +26,7 @@ function currentConditions(cityInput) {
             var cityLongitude = response.coord.lon;
             var cityLatitude = response.coord.lat;
 
-            var queryUVI = "http://api.openweathermap.org/data/2.5/uvi?lat=" + cityLatitude + "&lon=" + cityLongitude + "&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial"
+            var queryUVI = "https://api.openweathermap.org/data/2.5/uvi?lat=" + cityLatitude + "&lon=" + cityLongitude + "&appid=35f5097b02a181982a5bb6c4eee0ce65&units=imperial"
 
             $.ajax({
                 url: queryUVI,
@@ -59,7 +59,7 @@ function currentConditions(cityInput) {
 // Pull in 5-day forecast to the weather cards below
 function forecast(cityInput) {
 
-    var forecastQueryURL = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + cityInput + '&cnt=6&appid=166a433c57516f51dfab1f7edaed8413&units=imperial';
+    var forecastQueryURL = 'https://api.openweathermap.org/data/2.5/forecast/daily?q=' + cityInput + '&cnt=6&appid=166a433c57516f51dfab1f7edaed8413&units=imperial';
 
     $.ajax({
         url: forecastQueryURL,
@@ -73,7 +73,7 @@ function forecast(cityInput) {
 
                 var smallIcon = response.list[i].weather[0].icon
 
-                $('#icon' + i).attr('src', 'http://openweathermap.org/img/wn/' + smallIcon + '.png');
+                $('#icon' + i).attr('src', 'https://openweathermap.org/img/wn/' + smallIcon + '.png');
                 $('#temp' + i).text('Temperature: ' + response.list[i].temp.day + ' °F');
                 $('#humid' + i).text('Humidity: ' + response.list[i].humidity + '%');
 
